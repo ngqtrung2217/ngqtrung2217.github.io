@@ -1,35 +1,15 @@
 <?php
-// Lấy thông tin từ Railway MySQL Environment Variables
-$host = getenv("MYSQLHOST");
-$user = getenv("MYSQLUSER");
-$pass = getenv("MYSQLPASSWORD");
-$db   = getenv("MYSQLDATABASE");
+$host = getenv('mysql.railway.internal');
+$dbname = getenv('railway');
+$user = getenv('root');
+$pass = getenv('MlwKMBhISSTHhnyCtxnOsxeKjTJfvaja');
+$port = getenv('3306');
 
-// Kết nối database
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Kết nối MySQL thành công!";
+} catch (PDOException $e) {
+    die("Lỗi kết nối: " . $e->getMessage());
 }
-
-// Lấy dữ liệu từ form
-$name = $_POST['name'];
-$email = $_POST['email'];
-$subject = $_POST['subject'];
-$message = $_POST['message'];
-
-// Chuẩn bị câu lệnh SQL
-$sql = "INSERT INTO contacts (name, email, subject, message) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ssss", $name, $email, $subject, $message);
-
-// Thực thi truy vấn
-if ($stmt->execute()) {
-    echo "Message sent successfully!";
-} else {
-    echo "Error: " . $stmt->error;
-}
-
-// Đóng kết nối
-$stmt->close();
-$conn->close();
 ?>
