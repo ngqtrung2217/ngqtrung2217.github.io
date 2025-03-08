@@ -1,8 +1,8 @@
 <?php
-$host = getenv("MYSQLHOST");
-$user = getenv("MYSQLUSER");
-$pass = getenv("MYSQLPASSWORD");
-$db   = getenv("MYSQLDATABASE");
+$host = getenv("mysql.railway.internal");
+$user = getenv("root");
+$pass = getenv("MMDlYxVIJRHIGEiCLOvjzwzBAxFPJgnq");
+$db   = getenv("railway");
 
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
